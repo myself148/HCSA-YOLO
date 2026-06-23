@@ -6,45 +6,10 @@ import torch.nn.functional as F
 from ..modules import DFL
 from ..modules.conv import autopad
 
-from .block import DyDCNv2
 from ultralytics.utils.tal import dist2bbox, make_anchors, dist2rbox
 
 __all__ = ['Detect_STAH', 'OBB_STAH'
            ]
-
-class Scale(nn.Module):
-    """A learnable scale parameter.
-
-    This layer scales the input by a learnable factor. It multiplies a
-    learnable scale parameter of shape (1,) with input of any shape.
-
-    Args:
-        scale (float): Initial value of scale factor. Default: 1.0
-    """
-
-    def __init__(self, scale: float = 1.0):
-        super().__init__()
-        self.scale = nn.Parameter(torch.tensor(scale, dtype=torch.float))
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return x * self.scale
-
-class Conv_GN(nn.Module):
-    """Standard convolution with args(ch_in, ch_out, kernel, stride, padding, groups, dilation, activation)."""
-
-    default_act = nn.SiLU()  # default activation
-
-    def __init__(self, c1, c2, k=1, s=1, p=None, g=1, d=1, act=True):
-        """Initialize Conv layer with given arguments including activation."""
-        super().__init__()
-        self.conv = nn.Conv2d(c1, c2, k, s, autopad(k, p, d), groups=g, dilation=d, bias=False)
-        self.gn = nn.GroupNorm(16, c2)
-        self.act = self.default_act if act is True else act if isinstance(act, nn.Module) else nn.Identity()
-
-    def forward(self, x):
-        """Apply convolution, batch normalization and activation to input tensor."""
-        return self.act(self.gn(self.conv(x)))
-
 
 class TaskDecomposition(nn.Module):
     def __init__(self, feat_channels, stacked_convs, la_down_rate=8):
