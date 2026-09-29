@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.distributed as dist
 from ..modules.conv import Conv
 from ..modules.block import C2f, C3, C3Ghost, C3k2
-from ..extra_modules import *
 
 __all__ = 'RevCol',
 

@@ -76,6 +76,8 @@ from .conv import (
     SpatialAttention,
 )
 from .head import OBB, Classify, Detect, Pose, RTDETRDecoder, Segment, WorldDetect, v10Detect
+from .hcsa import ACCPM, ACCPO, DSWI, ERLConv, SPDConv, STAH, Detect_STAH, OBB_STAH
+from .attention import ECA, EMA
 from .transformer import (
     AIFI,
     MLP,
@@ -161,5 +163,15 @@ __all__ = (
     "C2fCIB",
     "Attention",
     "PSA",
-    "A2C2f"
+    "A2C2f",
+    "ACCPM",
+    "ACCPO",
+    "DSWI",
+    "ERLConv",
+    "SPDConv",
+    "STAH",
+    "Detect_STAH",
+    "OBB_STAH",
+    "ECA",
+    "EMA",
 )
